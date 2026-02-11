@@ -963,7 +963,7 @@ footer .movaia{color:var(--movaia-green);font-weight:700}
         
         <div style="display:flex;gap:0.75rem;margin-top:0.5rem">
           <button onclick="sendTestEmail()" style="flex:1;padding:0.75rem;background:rgba(123,255,0,0.1);border:1px solid rgba(123,255,0,0.3);border-radius:6px;color:var(--movaia-green);font-family:'Outfit',sans-serif;font-weight:600;font-size:0.85rem;cursor:pointer;transition:all 0.3s" onmouseover="this.style.background='rgba(123,255,0,0.2)'" onmouseout="this.style.background='rgba(123,255,0,0.1)'">
-            ✉ Send Test to Kartik
+            ✉ Send Test to Thomas
           </button>
           <button onclick="toggleApiKey()" style="padding:0.75rem 1rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:var(--gray);font-family:'Outfit',sans-serif;font-size:0.85rem;cursor:pointer;transition:all 0.3s" onmouseover="this.style.borderColor='rgba(255,255,255,0.2)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'">
             👁 Toggle Key
@@ -1596,7 +1596,7 @@ async function sendEmail(tester, index) {
 }
 
 async function sendTestEmail() {
-  addLog('Sending test email to kartik.cityu@gmail.com...', 'warn');
+  addLog('Sending test email to Thomas@movaia.com...', 'warn');
   const apiKey = document.getElementById('apiKey').value;
   const fromEmail = document.getElementById('fromEmail').value;
   const fromName = document.getElementById('fromName').value;
@@ -1610,7 +1610,7 @@ async function sendTestEmail() {
       body: JSON.stringify({
         apiKey: apiKey,
         from: `${fromName} <${fromEmail}>`,
-        to: ['kartik.cityu@gmail.com'],
+        to: ['Thomas@movaia.com'],
         subject: '[TEST] Beta Campaign Preview — Runner Template',
         html: getRunnerHTML('Thomas')
       })
@@ -1618,8 +1618,8 @@ async function sendTestEmail() {
 
     const data = await res.json();
     if (res.ok) {
-      addLog('✓ Test email sent to kartik.cityu@gmail.com!', 'success');
-      showToast('✅ Test email sent to Kartik!');
+      addLog('✓ Test email sent to Thomas@movaia.com!', 'success');
+      showToast('✅ Test email sent to Thomas!');
     } else {
       addLog(`✗ Test failed: ${data.message || JSON.stringify(data)}`, 'error');
       showToast('Failed to send test email', true);
