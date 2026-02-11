@@ -1,0 +1,1967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MOVAIA — Beta Launch Command Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --bg:#0a0a0a;
+  --bg-card:#111111;
+  --bg-card-hover:#161616;
+  --movaia-green:#7bff00;
+  --movaia-green-dim:#5abf00;
+  --movaia-green-glow:rgba(123,255,0,0.15);
+  --movaia-green-glow-strong:rgba(123,255,0,0.3);
+  --white:#f5f5f5;
+  --gray:#888;
+  --gray-dim:#444;
+  --red:#ff4444;
+  --amber:#ffaa00;
+  --success:#00ff88;
+}
+
+html{scroll-behavior:smooth}
+body{
+  font-family:'Outfit',sans-serif;
+  background:var(--bg);
+  color:var(--white);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ═══════ HERO ═══════ */
+.hero{
+  position:relative;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:2rem;
+  overflow:hidden;
+}
+
+.hero::before{
+  content:'';
+  position:absolute;
+  top:-50%;left:-50%;
+  width:200%;height:200%;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(123,255,0,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(123,255,0,0.04) 0%, transparent 50%);
+  animation:pulseGlow 8s ease-in-out infinite alternate;
+}
+
+@keyframes pulseGlow{
+  0%{transform:scale(1) rotate(0deg);opacity:0.7}
+  100%{transform:scale(1.1) rotate(2deg);opacity:1}
+}
+
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(123,255,0,0.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(123,255,0,0.03) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse at center,black 30%,transparent 70%);
+}
+
+.hero-badge{
+  position:relative;
+  display:inline-flex;align-items:center;gap:0.5rem;
+  padding:0.5rem 1.2rem;
+  border:1px solid rgba(123,255,0,0.3);
+  border-radius:100px;
+  font-size:0.8rem;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:var(--movaia-green);
+  background:rgba(123,255,0,0.05);
+  margin-bottom:2rem;
+  animation:fadeSlideUp 0.8s ease-out;
+}
+
+.hero-badge .dot{
+  width:6px;height:6px;
+  border-radius:50%;
+  background:var(--movaia-green);
+  animation:blink 1.5s ease-in-out infinite;
+}
+
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+
+.hero h1{
+  position:relative;
+  font-size:clamp(3rem,8vw,7rem);
+  font-weight:900;
+  line-height:0.95;
+  letter-spacing:-0.04em;
+  margin-bottom:1.5rem;
+  animation:fadeSlideUp 0.8s ease-out 0.1s both;
+}
+
+.hero h1 .green{color:var(--movaia-green);text-shadow:0 0 60px rgba(123,255,0,0.3)}
+
+.hero-sub{
+  position:relative;
+  font-size:clamp(1rem,2vw,1.4rem);
+  font-weight:300;
+  color:var(--gray);
+  max-width:600px;
+  line-height:1.6;
+  margin-bottom:3rem;
+  animation:fadeSlideUp 0.8s ease-out 0.2s both;
+}
+
+.hero-cta{
+  position:relative;
+  display:inline-flex;align-items:center;gap:0.75rem;
+  padding:1rem 2.5rem;
+  background:var(--movaia-green);
+  color:#000;
+  font-family:'Outfit',sans-serif;
+  font-weight:700;
+  font-size:1rem;
+  letter-spacing:0.05em;
+  text-transform:uppercase;
+  border:none;
+  border-radius:4px;
+  cursor:pointer;
+  transition:all 0.3s;
+  text-decoration:none;
+  animation:fadeSlideUp 0.8s ease-out 0.3s both;
+}
+
+.hero-cta:hover{
+  transform:translateY(-2px);
+  box-shadow:0 0 40px rgba(123,255,0,0.4),0 10px 40px rgba(123,255,0,0.2);
+}
+
+.hero-cta svg{width:18px;height:18px}
+
+.hero-stats{
+  position:relative;
+  display:flex;gap:3rem;
+  margin-top:4rem;
+  animation:fadeSlideUp 0.8s ease-out 0.4s both;
+}
+
+.hero-stat{text-align:center}
+.hero-stat .num{font-size:2.5rem;font-weight:800;color:var(--movaia-green);font-family:'JetBrains Mono',monospace}
+.hero-stat .label{font-size:0.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.1em;margin-top:0.25rem}
+
+@keyframes fadeSlideUp{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ═══════ SECTION COMMON ═══════ */
+section{padding:6rem 2rem}
+
+.section-label{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  font-size:0.75rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:var(--movaia-green);
+  margin-bottom:1rem;
+}
+
+.section-label::before{
+  content:'';
+  width:20px;height:1px;
+  background:var(--movaia-green);
+}
+
+.section-title{
+  font-size:clamp(2rem,4vw,3.5rem);
+  font-weight:800;
+  letter-spacing:-0.03em;
+  margin-bottom:1rem;
+}
+
+.section-desc{
+  font-size:1.1rem;
+  color:var(--gray);
+  max-width:600px;
+  line-height:1.6;
+  font-weight:300;
+}
+
+/* ═══════ CAMPAIGN PANEL ═══════ */
+#campaign{max-width:1200px;margin:0 auto}
+
+.campaign-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:2rem;
+  margin-top:3rem;
+}
+
+@media(max-width:900px){.campaign-grid{grid-template-columns:1fr}}
+
+.panel{
+  background:var(--bg-card);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:12px;
+  padding:2rem;
+  transition:border-color 0.3s;
+}
+
+.panel:hover{border-color:rgba(123,255,0,0.15)}
+
+.panel-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:1.5rem;
+  padding-bottom:1rem;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+
+.panel-title{font-size:1rem;font-weight:600;display:flex;align-items:center;gap:0.5rem}
+.panel-title svg{width:18px;height:18px;color:var(--movaia-green)}
+
+.panel-count{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.8rem;
+  color:var(--gray);
+  background:rgba(255,255,255,0.05);
+  padding:0.25rem 0.75rem;
+  border-radius:100px;
+}
+
+/* ═══════ TESTER LIST ═══════ */
+.tester-list{
+  max-height:500px;
+  overflow-y:auto;
+  scrollbar-width:thin;
+  scrollbar-color:var(--gray-dim) transparent;
+}
+
+.tester-item{
+  display:flex;align-items:center;gap:1rem;
+  padding:0.75rem 0.5rem;
+  border-bottom:1px solid rgba(255,255,255,0.03);
+  transition:background 0.2s;
+}
+
+.tester-item:hover{background:rgba(123,255,0,0.03);border-radius:8px}
+
+.tester-avatar{
+  width:36px;height:36px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;
+  font-size:0.8rem;
+  flex-shrink:0;
+}
+
+.tester-avatar.runner{background:rgba(123,255,0,0.15);color:var(--movaia-green)}
+.tester-avatar.coach{background:rgba(255,170,0,0.15);color:var(--amber)}
+
+.tester-info{flex:1;min-width:0}
+.tester-name{font-size:0.9rem;font-weight:500}
+.tester-email{font-size:0.75rem;color:var(--gray);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.tester-badge{
+  font-size:0.65rem;
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+  padding:0.2rem 0.6rem;
+  border-radius:100px;
+  font-weight:600;
+}
+
+.tester-badge.runner{background:rgba(123,255,0,0.1);color:var(--movaia-green);border:1px solid rgba(123,255,0,0.2)}
+.tester-badge.coach{background:rgba(255,170,0,0.1);color:var(--amber);border:1px solid rgba(255,170,0,0.2)}
+
+.tester-status{
+  width:8px;height:8px;
+  border-radius:50%;
+  flex-shrink:0;
+}
+
+.tester-status.pending{background:var(--gray-dim)}
+.tester-status.sent{background:var(--success);box-shadow:0 0 8px rgba(0,255,136,0.4)}
+.tester-status.failed{background:var(--red);box-shadow:0 0 8px rgba(255,68,68,0.4)}
+
+/* ═══════ EMAIL PREVIEW ═══════ */
+.email-preview-panel{grid-column:1/-1}
+
+.email-toggle-bar{
+  display:flex;gap:0.5rem;
+  margin-bottom:1.5rem;
+}
+
+.email-toggle{
+  padding:0.5rem 1.2rem;
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:100px;
+  background:transparent;
+  color:var(--gray);
+  font-family:'Outfit',sans-serif;
+  font-size:0.85rem;
+  cursor:pointer;
+  transition:all 0.3s;
+}
+
+.email-toggle.active{
+  background:var(--movaia-green);
+  color:#000;
+  border-color:var(--movaia-green);
+  font-weight:600;
+}
+
+.email-frame{
+  background:#0d0d0d;
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:8px;
+  overflow:hidden;
+}
+
+.email-frame-bar{
+  display:flex;align-items:center;gap:0.5rem;
+  padding:0.75rem 1rem;
+  background:rgba(255,255,255,0.03);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+
+.email-frame-dot{width:8px;height:8px;border-radius:50%}
+.email-frame-dot:nth-child(1){background:#ff5f56}
+.email-frame-dot:nth-child(2){background:#ffbd2e}
+.email-frame-dot:nth-child(3){background:#27c93f}
+
+.email-frame-title{margin-left:0.75rem;font-size:0.75rem;color:var(--gray);font-family:'JetBrains Mono',monospace}
+
+.email-body{padding:2.5rem;max-width:640px;margin:0 auto}
+
+.email-logo-area{text-align:center;margin-bottom:2rem}
+.email-logo{
+  font-size:1.5rem;
+  font-weight:900;
+  letter-spacing:0.1em;
+  color:var(--movaia-green);
+}
+
+.email-hero-text{
+  text-align:center;
+  margin-bottom:2rem;
+}
+
+.email-hero-text h2{
+  font-size:2rem;
+  font-weight:800;
+  line-height:1.1;
+  margin-bottom:0.75rem;
+}
+
+.email-hero-text .green{color:var(--movaia-green)}
+
+.email-hero-text p{color:var(--gray);font-size:0.95rem;line-height:1.6}
+
+.email-divider{
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(123,255,0,0.3),transparent);
+  margin:2rem 0;
+}
+
+.email-section-title{
+  font-size:0.75rem;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:var(--movaia-green);
+  margin-bottom:1rem;
+}
+
+.email-features{display:flex;flex-direction:column;gap:1rem;margin-bottom:2rem}
+
+.email-feature{
+  display:flex;align-items:flex-start;gap:0.75rem;
+  padding:1rem;
+  background:rgba(123,255,0,0.03);
+  border:1px solid rgba(123,255,0,0.08);
+  border-radius:8px;
+}
+
+.email-feature-icon{
+  width:32px;height:32px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(123,255,0,0.1);
+  border-radius:6px;
+  flex-shrink:0;
+  font-size:1rem;
+}
+
+.email-feature h4{font-size:0.9rem;font-weight:600;margin-bottom:0.25rem}
+.email-feature p{font-size:0.8rem;color:var(--gray);line-height:1.5}
+
+.email-cta-area{text-align:center;margin:2.5rem 0}
+
+.email-cta-btn{
+  display:inline-block;
+  padding:1rem 3rem;
+  background:var(--movaia-green);
+  color:#000;
+  font-weight:700;
+  font-size:0.95rem;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  border-radius:4px;
+  text-decoration:none;
+}
+
+.email-footer-text{
+  text-align:center;
+  font-size:0.8rem;
+  color:var(--gray);
+  line-height:1.6;
+}
+
+.email-value-callout{
+  text-align:center;
+  padding:1.5rem;
+  background:rgba(123,255,0,0.04);
+  border:1px solid rgba(123,255,0,0.1);
+  border-radius:8px;
+  margin:1.5rem 0;
+}
+
+.email-value-callout .big{
+  font-size:2rem;
+  font-weight:800;
+  color:var(--movaia-green);
+  font-family:'JetBrains Mono',monospace;
+}
+
+.email-value-callout .desc{font-size:0.85rem;color:var(--gray);margin-top:0.25rem}
+
+.email-steps{display:flex;flex-direction:column;gap:0.75rem;margin-bottom:1.5rem}
+
+.email-step{
+  display:flex;align-items:flex-start;gap:0.75rem;
+}
+
+.email-step-num{
+  width:24px;height:24px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--movaia-green);
+  color:#000;
+  font-weight:700;
+  font-size:0.7rem;
+  border-radius:50%;
+  flex-shrink:0;
+  margin-top:2px;
+}
+
+.email-step p{font-size:0.85rem;color:var(--white);line-height:1.5}
+.email-step p strong{color:var(--movaia-green)}
+
+.email-warning{
+  padding:1rem;
+  background:rgba(255,170,0,0.05);
+  border:1px solid rgba(255,170,0,0.15);
+  border-radius:8px;
+  font-size:0.8rem;
+  color:var(--amber);
+  text-align:center;
+  margin:1rem 0;
+  line-height:1.5;
+}
+
+/* ═══════ LAUNCH BUTTON ═══════ */
+.launch-section{
+  text-align:center;
+  padding:4rem 2rem;
+}
+
+.launch-btn{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  gap:1rem;
+  padding:1.5rem 4rem;
+  background:transparent;
+  border:2px solid var(--movaia-green);
+  color:var(--movaia-green);
+  font-family:'Outfit',sans-serif;
+  font-size:1.2rem;
+  font-weight:700;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  cursor:pointer;
+  border-radius:4px;
+  transition:all 0.4s;
+  overflow:hidden;
+}
+
+.launch-btn::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:var(--movaia-green);
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:transform 0.4s ease;
+  z-index:0;
+}
+
+.launch-btn:hover::before{transform:scaleX(1)}
+.launch-btn:hover{color:#000}
+.launch-btn span,.launch-btn svg{position:relative;z-index:1}
+
+.launch-btn:disabled{
+  opacity:0.5;cursor:not-allowed;
+}
+
+.launch-btn:disabled:hover::before{transform:scaleX(0)}
+.launch-btn:disabled:hover{color:var(--movaia-green)}
+
+/* ═══════ STATUS LOG ═══════ */
+.status-log{
+  max-width:800px;
+  margin:2rem auto 0;
+  text-align:left;
+}
+
+.log-entry{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.75rem;
+  padding:0.4rem 0;
+  border-bottom:1px solid rgba(255,255,255,0.03);
+  display:flex;
+  gap:1rem;
+  align-items:center;
+  animation:fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+
+.log-time{color:var(--gray-dim);flex-shrink:0}
+.log-msg{flex:1}
+.log-msg.success{color:var(--success)}
+.log-msg.error{color:var(--red)}
+.log-msg.info{color:var(--movaia-green)}
+.log-msg.warn{color:var(--amber)}
+
+/* ═══════ PROGRESS BAR ═══════ */
+.progress-container{
+  max-width:600px;
+  margin:2rem auto;
+  display:none;
+}
+
+.progress-bar-bg{
+  height:6px;
+  background:rgba(255,255,255,0.06);
+  border-radius:100px;
+  overflow:hidden;
+}
+
+.progress-bar-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--movaia-green),var(--movaia-green-dim));
+  border-radius:100px;
+  width:0%;
+  transition:width 0.5s ease;
+  box-shadow:0 0 15px rgba(123,255,0,0.3);
+}
+
+.progress-text{
+  display:flex;justify-content:space-between;
+  margin-top:0.5rem;
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.75rem;
+  color:var(--gray);
+}
+
+/* ═══════ FOOTER ═══════ */
+footer{
+  text-align:center;
+  padding:3rem 2rem;
+  border-top:1px solid rgba(255,255,255,0.04);
+  font-size:0.8rem;
+  color:var(--gray-dim);
+}
+
+footer .movaia{color:var(--movaia-green);font-weight:700}
+
+/* ═══════ TOAST ═══════ */
+.toast{
+  position:fixed;
+  bottom:2rem;right:2rem;
+  padding:1rem 1.5rem;
+  background:var(--bg-card);
+  border:1px solid rgba(123,255,0,0.2);
+  border-radius:8px;
+  font-size:0.85rem;
+  z-index:1000;
+  transform:translateY(100px);
+  opacity:0;
+  transition:all 0.4s;
+}
+
+.toast.show{transform:translateY(0);opacity:1}
+.toast.error{border-color:rgba(255,68,68,0.3)}
+
+/* ═══════ SCROLLBAR ═══════ */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--gray-dim);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--gray)}
+
+@media(max-width:600px){
+  .hero-stats{flex-direction:column;gap:1.5rem}
+  .campaign-grid{grid-template-columns:1fr}
+  .email-body{padding:1.5rem}
+}
+
+/* ═══════ COUNTDOWN OVERLAY ═══════ */
+.countdown-overlay{
+  position:fixed;
+  inset:0;
+  z-index:9000;
+  background:#000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+
+.countdown-overlay.active{display:flex}
+
+.countdown-overlay canvas{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+}
+
+.countdown-content{
+  position:relative;
+  z-index:1;
+  text-align:center;
+}
+
+.countdown-label{
+  font-size:0.8rem;
+  letter-spacing:0.3em;
+  text-transform:uppercase;
+  color:var(--movaia-green);
+  opacity:0.7;
+  margin-bottom:1rem;
+  animation:countdownPulseText 1s ease-in-out infinite;
+}
+
+.countdown-number{
+  font-family:'JetBrains Mono',monospace;
+  font-size:clamp(8rem,20vw,16rem);
+  font-weight:900;
+  color:var(--movaia-green);
+  text-shadow:
+    0 0 80px rgba(123,255,0,0.5),
+    0 0 160px rgba(123,255,0,0.3),
+    0 0 240px rgba(123,255,0,0.1);
+  line-height:1;
+  animation:countdownPop 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+
+.countdown-sub{
+  font-size:1rem;
+  color:var(--gray);
+  margin-top:1rem;
+  letter-spacing:0.1em;
+}
+
+@keyframes countdownPop{
+  0%{transform:scale(2.5);opacity:0;filter:blur(10px)}
+  60%{filter:blur(0)}
+  100%{transform:scale(1);opacity:1}
+}
+
+@keyframes countdownPulseText{
+  0%,100%{opacity:0.5}
+  50%{opacity:1}
+}
+
+/* Shockwave ring on LAUNCH */
+.shockwave{
+  position:absolute;
+  width:10px;height:10px;
+  border-radius:50%;
+  border:2px solid var(--movaia-green);
+  top:50%;left:50%;
+  transform:translate(-50%,-50%) scale(0);
+  animation:shockwaveExpand 1s ease-out forwards;
+  pointer-events:none;
+}
+
+@keyframes shockwaveExpand{
+  0%{transform:translate(-50%,-50%) scale(0);opacity:1;border-width:4px}
+  100%{transform:translate(-50%,-50%) scale(150);opacity:0;border-width:1px}
+}
+
+/* ═══════ SENDING STATE ═══════ */
+.launch-section.sending{
+  position:relative;
+}
+
+.launch-section.sending::after{
+  content:'';
+  position:fixed;
+  top:0;left:0;right:0;
+  height:3px;
+  background:linear-gradient(90deg,transparent,var(--movaia-green),transparent);
+  animation:scanLine 2s linear infinite;
+  z-index:100;
+}
+
+@keyframes scanLine{
+  0%{transform:translateX(-100%)}
+  100%{transform:translateX(100%)}
+}
+
+/* Pulsing glow on progress bar during send */
+.progress-bar-fill.active{
+  animation:progressGlow 1.5s ease-in-out infinite;
+}
+
+@keyframes progressGlow{
+  0%,100%{box-shadow:0 0 15px rgba(123,255,0,0.3)}
+  50%{box-shadow:0 0 30px rgba(123,255,0,0.6),0 0 60px rgba(123,255,0,0.2)}
+}
+
+/* Live counter during sending */
+.live-counter{
+  font-family:'JetBrains Mono',monospace;
+  font-size:clamp(3rem,6vw,5rem);
+  font-weight:900;
+  color:var(--movaia-green);
+  text-shadow:0 0 40px rgba(123,255,0,0.3);
+  margin:1.5rem 0;
+  transition:all 0.3s;
+}
+
+.live-counter .of-total{
+  font-size:0.35em;
+  color:var(--gray);
+  font-weight:400;
+}
+
+/* ═══════ SUCCESS OVERLAY ═══════ */
+.success-overlay{
+  position:fixed;
+  inset:0;
+  z-index:9000;
+  background:rgba(0,0,0,0.95);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+}
+
+.success-overlay.active{display:flex}
+
+.success-overlay canvas{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+}
+
+.success-content{
+  position:relative;
+  z-index:1;
+  text-align:center;
+  max-width:600px;
+  padding:2rem;
+}
+
+.success-icon{
+  margin-bottom:2rem;
+  animation:successIconIn 0.8s cubic-bezier(0.34,1.56,0.64,1) 0.3s both;
+}
+
+.success-circle{
+  stroke-dasharray:240;
+  stroke-dashoffset:240;
+  animation:drawCircle 1s ease-out 0.5s forwards;
+}
+
+.success-check{
+  stroke-dasharray:60;
+  stroke-dashoffset:60;
+  animation:drawCheck 0.5s ease-out 1.2s forwards;
+}
+
+@keyframes drawCircle{to{stroke-dashoffset:0}}
+@keyframes drawCheck{to{stroke-dashoffset:0}}
+@keyframes successIconIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+
+.success-title{
+  font-size:clamp(2rem,5vw,3.5rem);
+  font-weight:900;
+  letter-spacing:0.1em;
+  color:var(--movaia-green);
+  text-shadow:0 0 60px rgba(123,255,0,0.4);
+  margin-bottom:1.5rem;
+  animation:fadeSlideUp 0.6s ease-out 0.6s both;
+}
+
+.success-stat{
+  margin-bottom:1.5rem;
+  animation:fadeSlideUp 0.6s ease-out 0.8s both;
+}
+
+.success-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:5rem;
+  font-weight:900;
+  color:var(--white);
+  display:block;
+  line-height:1;
+}
+
+.success-label{
+  font-size:1rem;
+  color:var(--gray);
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+}
+
+.success-message{
+  font-size:1rem;
+  color:var(--gray);
+  line-height:1.7;
+  margin-bottom:2.5rem;
+  animation:fadeSlideUp 0.6s ease-out 1s both;
+}
+
+.success-breakdown{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:2rem;
+  margin-bottom:3rem;
+  animation:fadeSlideUp 0.6s ease-out 1.2s both;
+}
+
+.success-breakdown-item{text-align:center}
+
+.sbi-num{
+  display:block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:2rem;
+  font-weight:800;
+  color:var(--movaia-green);
+}
+
+.sbi-label{
+  font-size:0.7rem;
+  color:var(--gray);
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+}
+
+.success-breakdown-divider{
+  width:1px;
+  height:40px;
+  background:rgba(255,255,255,0.1);
+}
+
+.success-close{
+  padding:1rem 3rem;
+  background:transparent;
+  border:1px solid rgba(123,255,0,0.3);
+  color:var(--movaia-green);
+  font-family:'Outfit',sans-serif;
+  font-size:0.9rem;
+  font-weight:600;
+  border-radius:4px;
+  cursor:pointer;
+  transition:all 0.3s;
+  animation:fadeSlideUp 0.6s ease-out 1.4s both;
+}
+
+.success-close:hover{
+  background:var(--movaia-green);
+  color:#000;
+}
+
+/* Screen flash on completion */
+.screen-flash{
+  position:fixed;
+  inset:0;
+  background:var(--movaia-green);
+  z-index:8999;
+  animation:flash 0.6s ease-out forwards;
+  pointer-events:none;
+}
+
+@keyframes flash{
+  0%{opacity:0.8}
+  100%{opacity:0}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-badge"><span class="dot"></span> Beta Campaign — Live</div>
+  <h1>LAUNCH THE<br><span class="green">REVOLUTION</span></h1>
+  <p class="hero-sub">
+    27 hand-picked testers. One button. The future of running form analysis starts now. 
+    This is your moment, Thomas.
+  </p>
+  <a href="#campaign" class="hero-cta">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    <span>Enter Command Center</span>
+  </a>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="num">27</div>
+      <div class="label">Beta Testers</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">20</div>
+      <div class="label">Runners</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">7</div>
+      <div class="label">Coaches</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CAMPAIGN ═══════════ -->
+<section id="campaign">
+  <div class="section-label">Mission Control</div>
+  <h2 class="section-title">Beta Email Campaign</h2>
+  <p class="section-desc">Personalized invitations powered by Resend. Every email is tailored — runners get the athlete experience, coaches get the professional toolkit.</p>
+
+  <div class="campaign-grid">
+
+    <!-- TESTER LIST -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Beta Testers
+        </div>
+        <div class="panel-count" id="testerCount">27 total</div>
+      </div>
+      <div class="tester-list" id="testerList"></div>
+    </div>
+
+    <!-- CONFIG PANEL -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Configuration
+        </div>
+        <div class="panel-count">Resend API</div>
+      </div>
+      
+      <div style="display:flex;flex-direction:column;gap:1rem">
+        <div>
+          <label style="font-size:0.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;display:block">API Key</label>
+          <input type="password" id="apiKey" value="re_FPs1QdSL_8Krc5HrS1nccS7t5qG46EAZC" 
+            style="width:100%;padding:0.75rem 1rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:var(--white);font-family:'JetBrains Mono',monospace;font-size:0.8rem;outline:none"
+          >
+        </div>
+        <div>
+          <label style="font-size:0.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;display:block">From Address</label>
+          <input type="text" id="fromEmail" value="Thomas@movaia.com" 
+            style="width:100%;padding:0.75rem 1rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:var(--white);font-family:'Outfit',sans-serif;font-size:0.85rem;outline:none"
+          >
+        </div>
+        <div>
+          <label style="font-size:0.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;display:block">From Name</label>
+          <input type="text" id="fromName" value="Thomas Butter — Movaia" 
+            style="width:100%;padding:0.75rem 1rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:var(--white);font-family:'Outfit',sans-serif;font-size:0.85rem;outline:none"
+          >
+        </div>
+        
+        <div style="display:flex;gap:0.75rem;margin-top:0.5rem">
+          <button onclick="sendTestEmail()" style="flex:1;padding:0.75rem;background:rgba(123,255,0,0.1);border:1px solid rgba(123,255,0,0.3);border-radius:6px;color:var(--movaia-green);font-family:'Outfit',sans-serif;font-weight:600;font-size:0.85rem;cursor:pointer;transition:all 0.3s" onmouseover="this.style.background='rgba(123,255,0,0.2)'" onmouseout="this.style.background='rgba(123,255,0,0.1)'">
+            ✉ Send Test to Thomas
+          </button>
+          <button onclick="toggleApiKey()" style="padding:0.75rem 1rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:var(--gray);font-family:'Outfit',sans-serif;font-size:0.85rem;cursor:pointer;transition:all 0.3s" onmouseover="this.style.borderColor='rgba(255,255,255,0.2)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'">
+            👁 Toggle Key
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- EMAIL PREVIEW -->
+    <div class="panel email-preview-panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Email Preview
+        </div>
+        <div class="panel-count">HTML Template</div>
+      </div>
+
+      <div class="email-toggle-bar">
+        <button class="email-toggle active" onclick="showTemplate('runner', this)">🏃 Runner Version</button>
+        <button class="email-toggle" onclick="showTemplate('coach', this)">🧑‍💼 Coach Version</button>
+      </div>
+
+      <div class="email-frame">
+        <div class="email-frame-bar">
+          <div class="email-frame-dot"></div>
+          <div class="email-frame-dot"></div>
+          <div class="email-frame-dot"></div>
+          <div class="email-frame-title" id="emailSubject">Subject: You're Invited — Exclusive Beta Access to Movaia Running Form Analysis</div>
+        </div>
+        <div class="email-body" id="emailBody">
+          <!-- Filled by JS -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════ LAUNCH ═══════════ -->
+<section class="launch-section" id="launchSection">
+  <div class="section-label">Ignition Sequence</div>
+  <h2 class="section-title" style="margin-bottom:0.5rem">Ready to Launch?</h2>
+  <p class="section-desc" style="margin:0 auto 3rem;text-align:center">One click sends personalized emails to all 27 beta testers. Runners get the athlete invite. Coaches get the professional toolkit pitch. Every single one — sent from Thomas Butter, CEO & Founder.</p>
+
+  <div class="progress-container" id="progressContainer">
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+    <div class="progress-text">
+      <span id="progressSent">0 / 27 sent</span>
+      <span id="progressPercent">0%</span>
+    </div>
+  </div>
+
+  <button class="launch-btn" id="launchBtn" onclick="launchCampaign()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="24" height="24"><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    <span>Launch Campaign</span>
+  </button>
+
+  <div class="status-log" id="statusLog"></div>
+</section>
+
+<!-- ═══════════ COUNTDOWN OVERLAY ═══════════ -->
+<div class="countdown-overlay" id="countdownOverlay">
+  <canvas id="particleCanvas"></canvas>
+  <div class="countdown-content" id="countdownContent">
+    <div class="countdown-label">INITIATING LAUNCH SEQUENCE</div>
+    <div class="countdown-number" id="countdownNumber">3</div>
+    <div class="countdown-sub" id="countdownSub">Systems armed</div>
+  </div>
+</div>
+
+<!-- ═══════════ SUCCESS CELEBRATION ═══════════ -->
+<div class="success-overlay" id="successOverlay">
+  <canvas id="confettiCanvas"></canvas>
+  <div class="success-content" id="successContent">
+    <div class="success-icon">
+      <svg viewBox="0 0 80 80" fill="none" width="80" height="80">
+        <circle cx="40" cy="40" r="38" stroke="#7bff00" stroke-width="3" class="success-circle"/>
+        <polyline points="22,42 35,55 58,28" stroke="#7bff00" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" class="success-check"/>
+      </svg>
+    </div>
+    <div class="success-title" id="successTitle">CAMPAIGN LAUNCHED</div>
+    <div class="success-stat" id="successStat">
+      <span class="success-num" id="successNum">27</span>
+      <span class="success-label">emails delivered</span>
+    </div>
+    <div class="success-message" id="successMessage">
+      Every runner. Every coach. All from Thomas Butter, CEO & Founder.<br>
+      <span style="color:var(--movaia-green)">The future of running analysis starts now.</span>
+    </div>
+    <div class="success-breakdown" id="successBreakdown">
+      <div class="success-breakdown-item">
+        <span class="sbi-num" id="sbiRunners">20</span>
+        <span class="sbi-label">Runners</span>
+      </div>
+      <div class="success-breakdown-divider"></div>
+      <div class="success-breakdown-item">
+        <span class="sbi-num" id="sbiCoaches">7</span>
+        <span class="sbi-label">Coaches</span>
+      </div>
+      <div class="success-breakdown-divider"></div>
+      <div class="success-breakdown-item">
+        <span class="sbi-num" id="sbiFailed">0</span>
+        <span class="sbi-label">Failed</span>
+      </div>
+    </div>
+    <button class="success-close" onclick="closeSuccess()">Back to Command Center</button>
+  </div>
+</div>
+
+<footer>
+  <span class="movaia">MOVAIA</span> — Beta Launch Command Center<br>
+  <span style="font-size:0.7rem;color:var(--gray-dim)">Built with Resend • Designed to make Thomas feel crazy good 🚀</span>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════ DATA ═══════════
+const TESTERS = [
+  { name: "Chris", email: "chris@posture-plus.com", type: "Coach" },
+  { name: "Colin", email: "Colin.Giles@Weintegrate.com", type: "Runner" },
+  { name: "Elton", email: "lamelton@hotmail.com", type: "Coach" },
+  { name: "Ginny", email: "ginnyshares@gmail.com", type: "Runner" },
+  { name: "JP", email: "jpagloria@gmail.com", type: "Coach" },
+  { name: "Mohamed Hashi", email: "mohashi123@hotmail.co.uk", type: "Runner" },
+  { name: "David (Joint Dynamics)", email: "david@jointdynamics.com.hk", type: "Coach" },
+  { name: "Mete", email: "metecheung@gmail.com", type: "Coach" },
+  { name: "Yann Kai", email: "yannkai.oh@gmail.com", type: "Runner" },
+  { name: "Annie", email: "annie@orbitalsports.hk", type: "Runner" },
+  { name: "Kent", email: "kent@orbitalsports.hk", type: "Coach" },
+  { name: "Gareth", email: "Gareth@wong.org.uk", type: "Runner" },
+  { name: "Rainer", email: "rduespohl@hotmail.de", type: "Runner" },
+  { name: "Halkson", email: "halkson1389@gmail.com", type: "Runner" },
+  { name: "Andrew", email: "andrew@the-grind.app.com", type: "Runner" },
+  { name: "Wing", email: "Winglee@wnjventures.com", type: "Runner" },
+  { name: "Dominik", email: "d.wiesent@gmail.com", type: "Runner" },
+  { name: "Christiana", email: "c.butter@gmx.at", type: "Runner" },
+  { name: "Laura", email: "Laura.butter500@gmail.com", type: "Runner" },
+  { name: "DrWarren", email: "drwarren@exmersive.ai", type: "Runner" },
+  { name: "Jason Skillicorn", email: "skillicorn.jason@gmail.com", type: "Coach" },
+  { name: "Aigul", email: "wlab@thedo.world", type: "Runner" },
+  { name: "Olivia", email: "lavenderzxlee@gmail.com", type: "Runner" },
+  { name: "KS Cheng", email: "ksc.bkd@gmail.com", type: "Runner" },
+  { name: "Tim Alvner", email: "tim@alvner.com", type: "Runner" },
+  { name: "Sahib", email: "sahibjit@24hourrace.org", type: "Runner" },
+  { name: "Sabrina", email: "sabrinalippai@hotmail.com", type: "Runner" }
+];
+
+// ═══════════ EMAIL TEMPLATES ═══════════
+function getRunnerHTML(name) {
+  return `
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background-color:#0a0a0a;font-family:Arial,Helvetica,sans-serif;color:#f5f5f5">
+<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#0a0a0a;padding:40px 20px">
+<tr><td align="center">
+<table width="600" cellpadding="0" cellspacing="0" style="max-width:600px">
+
+<tr><td align="center" style="padding:30px 0 20px">
+  <span style="font-size:24px;font-weight:900;letter-spacing:3px;color:#7bff00">MOVAIA</span>
+</td></tr>
+
+<tr><td style="padding:10px 0 5px" align="center">
+  <span style="display:inline-block;padding:6px 16px;border:1px solid rgba(123,255,0,0.3);border-radius:50px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7bff00;background:rgba(123,255,0,0.05)">✦ EXCLUSIVE BETA ACCESS ✦</span>
+</td></tr>
+
+<tr><td style="padding:30px 0 10px;text-align:center">
+  <h1 style="margin:0;font-size:32px;font-weight:900;line-height:1.1;color:#f5f5f5">You've Been<br><span style="color:#7bff00">Hand-Selected</span></h1>
+</td></tr>
+
+<tr><td style="padding:10px 30px 20px;text-align:center;font-size:16px;color:#888;line-height:1.7">
+  Dear ${name},<br><br>
+  Movaia is about to launch our revamped Running Form Analysis platform, and we are thrilled to invite you to our closed beta test.<br><br>
+  We consider you <strong style="color:#f5f5f5">"Family and Friends,"</strong> so we want you to be the first to experience our new AI capabilities before we go public.
+</td></tr>
+
+<tr><td style="padding:0 30px">
+  <table width="100%" style="border-collapse:collapse"><tr><td style="height:1px;background:linear-gradient(90deg,transparent,rgba(123,255,0,0.3),transparent)"></td></tr></table>
+</td></tr>
+
+<tr><td style="padding:25px 30px 5px">
+  <span style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7bff00">What is Movaia?</span>
+</td></tr>
+
+<tr><td style="padding:10px 30px 5px;font-size:14px;color:#888;line-height:1.7">
+  We have built an AI-powered platform that democratizes professional running analysis:
+</td></tr>
+
+<tr><td style="padding:10px 30px">
+  <table width="100%" cellspacing="0" cellpadding="0">
+    <tr><td style="padding:12px 16px;background:rgba(123,255,0,0.03);border:1px solid rgba(123,255,0,0.08);border-radius:8px;margin-bottom:8px">
+      <strong style="color:#f5f5f5;font-size:14px">🔬 Deep Dive Analysis</strong><br>
+      <span style="font-size:13px;color:#888">Visual breakdowns of your Key Gait Moments — see every stride in detail.</span>
+    </td></tr>
+    <tr><td style="height:8px"></td></tr>
+    <tr><td style="padding:12px 16px;background:rgba(123,255,0,0.03);border:1px solid rgba(123,255,0,0.08);border-radius:8px">
+      <strong style="color:#f5f5f5;font-size:14px">🤖 AI RunBot</strong><br>
+      <span style="font-size:13px;color:#888">An intelligent coach that knows your specific running data and provides tailored advice.</span>
+    </td></tr>
+    <tr><td style="height:8px"></td></tr>
+    <tr><td style="padding:12px 16px;background:rgba(123,255,0,0.03);border:1px solid rgba(123,255,0,0.08);border-radius:8px">
+      <strong style="color:#f5f5f5;font-size:14px">💪 Corrective Exercises</strong><br>
+      <span style="font-size:13px;color:#888">Powerful routines based on your specific form to run faster and safer.</span>
+    </td></tr>
+  </table>
+</td></tr>
+
+<tr><td style="padding:20px 30px;text-align:center">
+  <table cellspacing="0" cellpadding="0" align="center"><tr>
+    <td style="background:rgba(123,255,0,0.04);border:1px solid rgba(123,255,0,0.1);border-radius:8px;padding:20px 40px;text-align:center">
+      <span style="font-size:36px;font-weight:900;color:#7bff00;font-family:monospace">$150+</span><br>
+      <span style="font-size:13px;color:#888">value — yours FREE as a beta tester</span><br>
+      <span style="font-size:12px;color:#7bff00;margin-top:5px;display:inline-block">+ 3 months free PRO after trial</span>
+    </td>
+  </tr></table>
+</td></tr>
+
+<tr><td style="padding:0 30px">
+  <table width="100%" style="border-collapse:collapse"><tr><td style="height:1px;background:linear-gradient(90deg,transparent,rgba(123,255,0,0.3),transparent)"></td></tr></table>
+</td></tr>
+
+<tr><td style="padding:25px 30px 5px">
+  <span style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7bff00">How to Start (Please Read Carefully)</span>
+</td></tr>
+
+<tr><td style="padding:15px 30px">
+  <table width="100%" cellspacing="0" cellpadding="0">
+    <tr>
+      <td style="width:32px;vertical-align:top;padding-right:12px">
+        <span style="display:inline-block;width:24px;height:24px;background:#7bff00;color:#000;font-weight:700;font-size:12px;text-align:center;line-height:24px;border-radius:50%">1</span>
+      </td>
+      <td style="font-size:14px;color:#f5f5f5;line-height:1.6;padding-bottom:12px">
+        <strong style="color:#7bff00">Watch the Guide:</strong> Before you head to the track, please watch this short 90-second video on how to record your run. Good video quality ensures accurate results.
+      </td>
+    </tr>
+    <tr>
+      <td style="width:32px;vertical-align:top;padding-right:12px">
+        <span style="display:inline-block;width:24px;height:24px;background:#7bff00;color:#000;font-weight:700;font-size:12px;text-align:center;line-height:24px;border-radius:50%">2</span>
+      </td>
+      <td style="font-size:14px;color:#f5f5f5;line-height:1.6;padding-bottom:12px">
+        <strong style="color:#7bff00">Go to the Beta Site:</strong> Visit <a href="https://beta.movaia.com" style="color:#7bff00">beta.movaia.com</a>
+      </td>
+    </tr>
+    <tr>
+      <td style="width:32px;vertical-align:top;padding-right:12px">
+        <span style="display:inline-block;width:24px;height:24px;background:#7bff00;color:#000;font-weight:700;font-size:12px;text-align:center;line-height:24px;border-radius:50%">3</span>
+      </td>
+      <td style="font-size:14px;color:#f5f5f5;line-height:1.6;padding-bottom:12px">
+        <strong style="color:#7bff00">Sign Up:</strong> Create an account using <strong>this exact email address</strong> (the one you received this message on).
+      </td>
+    </tr>
+    <tr>
+      <td style="width:32px;vertical-align:top;padding-right:12px">
+        <span style="display:inline-block;width:24px;height:24px;background:#7bff00;color:#000;font-weight:700;font-size:12px;text-align:center;line-height:24px;border-radius:50%">4</span>
+      </td>
+      <td style="font-size:14px;color:#f5f5f5;line-height:1.6">
+        <strong style="color:#7bff00">Upload & Analyze:</strong> Upload your video, wait for the analysis, and explore your insights!
+      </td>
+    </tr>
+  </table>
+</td></tr>
+
+<tr><td style="padding:10px 30px">
+  <table width="100%" cellspacing="0" cellpadding="0"><tr>
+    <td style="background:rgba(255,170,0,0.05);border:1px solid rgba(255,170,0,0.15);border-radius:8px;padding:14px 18px;text-align:center;font-size:13px;color:#ffaa00;line-height:1.6">
+      ⚠️ <strong>Important:</strong> Our system has pre-authorized this specific email address to bypass the payment screen and upgrade you to PRO. Using a different email will not work.
+    </td>
+  </tr></table>
+</td></tr>
+
+<tr><td align="center" style="padding:30px 0">
+  <a href="https://beta.movaia.com" style="display:inline-block;padding:16px 48px;background:#7bff00;color:#000;font-weight:700;font-size:16px;letter-spacing:1px;text-transform:uppercase;border-radius:4px;text-decoration:none">Start Your Analysis →</a>
+</td></tr>
+
+<tr><td style="padding:0 30px">
+  <table width="100%" style="border-collapse:collapse"><tr><td style="height:1px;background:linear-gradient(90deg,transparent,rgba(123,255,0,0.3),transparent)"></td></tr></table>
+</td></tr>
+
+<tr><td style="padding:25px 30px 5px">
+  <span style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7bff00">How to Help Us Improve</span>
+</td></tr>
+
+<tr><td style="padding:10px 30px;font-size:14px;color:#888;line-height:1.7">
+  <strong style="color:#f5f5f5">Spot a glitch?</strong> Simply click the "Report Bug" button directly inside the app.<br><br>
+  <strong style="color:#f5f5f5">Overall feedback?</strong> We will send you a very short survey a few days after you sign up to hear about your experience.
+</td></tr>
+
+<tr><td style="padding:30px 30px 10px;text-align:center;font-size:16px;color:#f5f5f5;font-weight:600">
+  Thank you for helping us build the future of running analysis! 🏃‍♂️
+</td></tr>
+
+<tr><td style="padding:20px 30px;text-align:center;font-size:14px;color:#888">
+  Best regards,<br><br>
+  <strong style="color:#f5f5f5;font-size:16px">Thomas</strong><br>
+  <span style="color:#7bff00;font-size:12px;letter-spacing:1px">CEO / FOUNDER</span><br>
+  <span style="color:#444;font-size:12px">movaia.com</span>
+</td></tr>
+
+</table>
+</td></tr></table>
+</body></html>`;
+}
+
+function getCoachHTML(name) {
+  return `
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background-color:#0a0a0a;font-family:Arial,Helvetica,sans-serif;color:#f5f5f5">
+<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#0a0a0a;padding:40px 20px">
+<tr><td align="center">
+<table width="600" cellpadding="0" cellspacing="0" style="max-width:600px">
+
+<tr><td align="center" style="padding:30px 0 20px">
+  <span style="font-size:24px;font-weight:900;letter-spacing:3px;color:#7bff00">MOVAIA</span>
+</td></tr>
+
+<tr><td style="padding:10px 0 5px" align="center">
+  <span style="display:inline-block;padding:6px 16px;border:1px solid rgba(255,170,0,0.3);border-radius:50px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#ffaa00;background:rgba(255,170,0,0.05)">✦ COACHING BETA ACCESS ✦</span>
+</td></tr>
+
+<tr><td style="padding:30px 0 10px;text-align:center">
+  <h1 style="margin:0;font-size:32px;font-weight:900;line-height:1.1;color:#f5f5f5">Streamline Your<br><span style="color:#7bff00">Gait Analysis</span></h1>
+</td></tr>
+
+<tr><td style="padding:10px 30px 20px;text-align:center;font-size:16px;color:#888;line-height:1.7">
+  Dear ${name},<br><br>
+  Movaia is about to launch our revamped Running Form Analysis platform, and we would like to invite you to our closed beta test.<br><br>
+  We view you as a <strong style="color:#f5f5f5">trusted partner in the running community,</strong> and we want you to be the first to experience how our new AI capabilities can support your coaching business.
+</td></tr>
+
+<tr><td style="padding:0 30px">
+  <table width="100%" style="border-collapse:collapse"><tr><td style="height:1px;background:linear-gradient(90deg,transparent,rgba(123,255,0,0.3),transparent)"></td></tr></table>
+</td></tr>
+
+<tr><td style="padding:25px 30px 5px">
+  <span style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7bff00">What is Movaia for Coaches?</span>
+</td></tr>
+
+<tr><td style="padding:10px 30px 5px;font-size:14px;color:#888;line-height:1.7">
+  We have built an AI-powered platform designed to handle the heavy lifting of data analysis, so you can focus on the athlete:
+</td></tr>
+
+<tr><td style="padding:10px 30px">
+  <table width="100%" cellspacing="0" cellpadding="0">
+    <tr><td style="padding:12px 16px;background:rgba(123,255,0,0.03);border:1px solid rgba(123,255,0,0.08);border-radius:8px">
+      <strong style="color:#f5f5f5;font-size:14px">📊 Unified Coaching Dashboard</strong><br>
+      <span style="font-size:13px;color:#888">Seamless management of multiple athletes and their data from one central view.</span>
+    </td></tr>
+    <tr><td style="height:8px"></td></tr>
+    <tr><td style="padding:12px 16px;background:rgba(123,255,0,0.03);border:1px solid rgba(123,255,0,0.08);border-radius:8px">
+      <strong style="color:#f5f5f5;font-size:14px">🔬 Deep Dive Analysis</strong><br>
+      <span style="font-size:13px;color:#888">Automated visual breakdowns of Key Gait Moments for every video uploaded.</span>
+    </td></tr>
+    <tr><td style="height:8px"></td></tr>
+    <tr><td style="padding:12px 16px;background:rgba(123,255,0,0.03);border:1px solid rgba(123,255,0,0.08);border-radius:8px">
+      <strong style="color:#f5f5f5;font-size:14px">🤖 AI Coaching Assistant</strong><br>
+      <span style="font-size:13px;color:#888">A smart assistant that reviews the analysis and helps you prepare for athlete meetings.</span>
+    </td></tr>
+    <tr><td style="height:8px"></td></tr>
+    <tr><td style="padding:12px 16px;background:rgba(123,255,0,0.03);border:1px solid rgba(123,255,0,0.08);border-radius:8px">
+      <strong style="color:#f5f5f5;font-size:14px">💪 Corrective Exercises</strong><br>
+      <span style="font-size:13px;color:#888">A library of powerful routines you can assign based on the analysis.</span>
+    </td></tr>
+  </table>
+</td></tr>
+
+<tr><td style="padding:20px 30px;text-align:center">
+  <table cellspacing="0" cellpadding="0" align="center"><tr>
+    <td style="background:rgba(123,255,0,0.04);border:1px solid rgba(123,255,0,0.1);border-radius:8px;padding:20px 40px;text-align:center">
+      <span style="font-size:36px;font-weight:900;color:#7bff00;font-family:monospace">1hr+</span><br>
+      <span style="font-size:13px;color:#888">saved per analysis — done in minutes</span><br>
+      <span style="font-size:12px;color:#7bff00;margin-top:5px;display:inline-block">+ 3 months free PRO Coaching after trial</span>
+    </td>
+  </tr></table>
+</td></tr>
+
+<tr><td style="padding:0 30px">
+  <table width="100%" style="border-collapse:collapse"><tr><td style="height:1px;background:linear-gradient(90deg,transparent,rgba(123,255,0,0.3),transparent)"></td></tr></table>
+</td></tr>
+
+<tr><td style="padding:25px 30px 5px">
+  <span style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7bff00">How to Start (Please Read Carefully)</span>
+</td></tr>
+
+<tr><td style="padding:15px 30px">
+  <table width="100%" cellspacing="0" cellpadding="0">
+    <tr>
+      <td style="width:32px;vertical-align:top;padding-right:12px">
+        <span style="display:inline-block;width:24px;height:24px;background:#7bff00;color:#000;font-weight:700;font-size:12px;text-align:center;line-height:24px;border-radius:50%">1</span>
+      </td>
+      <td style="font-size:14px;color:#f5f5f5;line-height:1.6;padding-bottom:12px">
+        <strong style="color:#7bff00">Video Guidelines:</strong> To get the best data for your athletes, the input video matters. Please watch (or share) this short 90-second guide on how to record the perfect run.
+      </td>
+    </tr>
+    <tr>
+      <td style="width:32px;vertical-align:top;padding-right:12px">
+        <span style="display:inline-block;width:24px;height:24px;background:#7bff00;color:#000;font-weight:700;font-size:12px;text-align:center;line-height:24px;border-radius:50%">2</span>
+      </td>
+      <td style="font-size:14px;color:#f5f5f5;line-height:1.6;padding-bottom:12px">
+        <strong style="color:#7bff00">Go to the Beta Site:</strong> Visit <a href="https://beta.movaia.com" style="color:#7bff00">beta.movaia.com</a>
+      </td>
+    </tr>
+    <tr>
+      <td style="width:32px;vertical-align:top;padding-right:12px">
+        <span style="display:inline-block;width:24px;height:24px;background:#7bff00;color:#000;font-weight:700;font-size:12px;text-align:center;line-height:24px;border-radius:50%">3</span>
+      </td>
+      <td style="font-size:14px;color:#f5f5f5;line-height:1.6;padding-bottom:12px">
+        <strong style="color:#7bff00">Sign Up:</strong> Create an account using <strong>this exact email address</strong> (the one you received this message on).
+      </td>
+    </tr>
+    <tr>
+      <td style="width:32px;vertical-align:top;padding-right:12px">
+        <span style="display:inline-block;width:24px;height:24px;background:#7bff00;color:#000;font-weight:700;font-size:12px;text-align:center;line-height:24px;border-radius:50%">4</span>
+      </td>
+      <td style="font-size:14px;color:#f5f5f5;line-height:1.6">
+        <strong style="color:#7bff00">Test the Workflow:</strong> Upload a video, review the automated insights, and try the coaching assistant.
+      </td>
+    </tr>
+  </table>
+</td></tr>
+
+<tr><td style="padding:10px 30px">
+  <table width="100%" cellspacing="0" cellpadding="0"><tr>
+    <td style="background:rgba(255,170,0,0.05);border:1px solid rgba(255,170,0,0.15);border-radius:8px;padding:14px 18px;text-align:center;font-size:13px;color:#ffaa00;line-height:1.6">
+      ⚠️ <strong>Important:</strong> Our system has pre-authorized this specific email address to bypass the payment screen and assign you a PRO Coaching account. Using a different email will not work.
+    </td>
+  </tr></table>
+</td></tr>
+
+<tr><td align="center" style="padding:30px 0">
+  <a href="https://beta.movaia.com" style="display:inline-block;padding:16px 48px;background:#7bff00;color:#000;font-weight:700;font-size:16px;letter-spacing:1px;text-transform:uppercase;border-radius:4px;text-decoration:none">Access Coaching Dashboard →</a>
+</td></tr>
+
+<tr><td style="padding:0 30px">
+  <table width="100%" style="border-collapse:collapse"><tr><td style="height:1px;background:linear-gradient(90deg,transparent,rgba(123,255,0,0.3),transparent)"></td></tr></table>
+</td></tr>
+
+<tr><td style="padding:25px 30px 5px">
+  <span style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7bff00">How to Help Us Improve</span>
+</td></tr>
+
+<tr><td style="padding:10px 30px;font-size:14px;color:#888;line-height:1.7">
+  <strong style="color:#f5f5f5">Spot a glitch?</strong> Simply click the "Report Bug" button directly inside the dashboard.<br><br>
+  <strong style="color:#f5f5f5">Overall feedback?</strong> We will send you a very short survey a few days after you sign up to hear your thoughts on the workflow.
+</td></tr>
+
+<tr><td style="padding:30px 30px 10px;text-align:center;font-size:16px;color:#f5f5f5;font-weight:600">
+  Thank you for helping us build the future of coaching technology! 🚀
+</td></tr>
+
+<tr><td style="padding:20px 30px;text-align:center;font-size:14px;color:#888">
+  Best regards,<br><br>
+  <strong style="color:#f5f5f5;font-size:16px">Thomas</strong><br>
+  <span style="color:#7bff00;font-size:12px;letter-spacing:1px">CEO / FOUNDER</span><br>
+  <span style="color:#444;font-size:12px">movaia.com</span>
+</td></tr>
+
+</table>
+</td></tr></table>
+</body></html>`;
+}
+
+// ═══════════ UI LOGIC ═══════════
+let currentTemplate = 'runner';
+
+function renderTesterList() {
+  const list = document.getElementById('testerList');
+  list.innerHTML = TESTERS.map((t, i) => `
+    <div class="tester-item" id="tester-${i}">
+      <div class="tester-avatar ${t.type.toLowerCase()}">${t.name[0]}</div>
+      <div class="tester-info">
+        <div class="tester-name">${t.name}</div>
+        <div class="tester-email">${t.email}</div>
+      </div>
+      <span class="tester-badge ${t.type.toLowerCase()}">${t.type}</span>
+      <div class="tester-status pending" id="status-${i}" title="Pending"></div>
+    </div>
+  `).join('');
+}
+
+function showTemplate(type, btn) {
+  currentTemplate = type;
+  document.querySelectorAll('.email-toggle').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  
+  const body = document.getElementById('emailBody');
+  const subject = document.getElementById('emailSubject');
+  
+  if (type === 'runner') {
+    subject.textContent = "Subject: You're Invited — Exclusive Beta Access to Movaia Running Form Analysis";
+    body.innerHTML = createPreviewHTML('runner');
+  } else {
+    subject.textContent = "Subject: Exclusive Beta Invite — Streamline Your Gait Analysis with Movaia";
+    body.innerHTML = createPreviewHTML('coach');
+  }
+}
+
+function createPreviewHTML(type) {
+  if (type === 'runner') {
+    return `
+      <div class="email-logo-area"><div class="email-logo">MOVAIA</div></div>
+      <div class="email-hero-text">
+        <div style="display:inline-block;padding:4px 12px;border:1px solid rgba(123,255,0,0.3);border-radius:50px;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--movaia-green);margin-bottom:1rem">✦ Exclusive Beta Access ✦</div>
+        <h2>You've Been<br><span class="green">Hand-Selected</span></h2>
+        <p>Dear {Name},<br><br>Movaia is about to launch our revamped Running Form Analysis platform, and we are thrilled to invite you to our closed beta test. We consider you <strong style="color:var(--white)">"Family and Friends,"</strong> so we want you to be the first to experience our new AI capabilities before we go public.</p>
+      </div>
+      <div class="email-divider"></div>
+      <div class="email-section-title">What is Movaia?</div>
+      <div class="email-features">
+        <div class="email-feature"><div class="email-feature-icon">🔬</div><div><h4>Deep Dive Analysis</h4><p>Visual breakdowns of your Key Gait Moments.</p></div></div>
+        <div class="email-feature"><div class="email-feature-icon">🤖</div><div><h4>AI RunBot</h4><p>An intelligent coach that knows your specific running data.</p></div></div>
+        <div class="email-feature"><div class="email-feature-icon">💪</div><div><h4>Corrective Exercises</h4><p>Powerful routines based on your specific form.</p></div></div>
+      </div>
+      <div class="email-value-callout">
+        <div class="big">$150+</div>
+        <div class="desc">value — yours FREE as a beta tester<br><span style="color:var(--movaia-green)">+ 3 months free PRO after trial</span></div>
+      </div>
+      <div class="email-divider"></div>
+      <div class="email-section-title">How to Start</div>
+      <div class="email-steps">
+        <div class="email-step"><div class="email-step-num">1</div><p><strong>Watch the Guide:</strong> Short 90-second video on how to record your run.</p></div>
+        <div class="email-step"><div class="email-step-num">2</div><p><strong>Go to Beta Site:</strong> Visit beta.movaia.com</p></div>
+        <div class="email-step"><div class="email-step-num">3</div><p><strong>Sign Up:</strong> Use this exact email address.</p></div>
+        <div class="email-step"><div class="email-step-num">4</div><p><strong>Upload & Analyze:</strong> Explore your insights!</p></div>
+      </div>
+      <div class="email-warning">⚠️ Our system has pre-authorized this email to bypass payment and upgrade you to PRO. Using a different email will not work.</div>
+      <div class="email-cta-area"><a href="#" class="email-cta-btn">Start Your Analysis →</a></div>
+      <div class="email-divider"></div>
+      <div class="email-footer-text">Thank you for helping us build the future of running analysis! 🏃‍♂️<br><br><strong style="color:var(--white)">Thomas</strong><br><span style="color:var(--movaia-green)">CEO / Founder</span></div>
+    `;
+  } else {
+    return `
+      <div class="email-logo-area"><div class="email-logo">MOVAIA</div></div>
+      <div class="email-hero-text">
+        <div style="display:inline-block;padding:4px 12px;border:1px solid rgba(255,170,0,0.3);border-radius:50px;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--amber);margin-bottom:1rem">✦ Coaching Beta Access ✦</div>
+        <h2>Streamline Your<br><span class="green">Gait Analysis</span></h2>
+        <p>Dear {Name},<br><br>Movaia is about to launch our revamped Running Form Analysis platform, and we would like to invite you to our closed beta test. We view you as a <strong style="color:var(--white)">trusted partner in the running community,</strong> and we want you to be the first to experience how our new AI capabilities can support your coaching business.</p>
+      </div>
+      <div class="email-divider"></div>
+      <div class="email-section-title">What is Movaia for Coaches?</div>
+      <div class="email-features">
+        <div class="email-feature"><div class="email-feature-icon">📊</div><div><h4>Unified Coaching Dashboard</h4><p>Manage multiple athletes from one central view.</p></div></div>
+        <div class="email-feature"><div class="email-feature-icon">🔬</div><div><h4>Deep Dive Analysis</h4><p>Automated visual breakdowns of Key Gait Moments.</p></div></div>
+        <div class="email-feature"><div class="email-feature-icon">🤖</div><div><h4>AI Coaching Assistant</h4><p>Reviews analysis and helps prep for athlete meetings.</p></div></div>
+        <div class="email-feature"><div class="email-feature-icon">💪</div><div><h4>Corrective Exercises</h4><p>A library of routines to assign based on analysis.</p></div></div>
+      </div>
+      <div class="email-value-callout">
+        <div class="big">1hr+</div>
+        <div class="desc">saved per analysis — done in minutes<br><span style="color:var(--movaia-green)">+ 3 months free PRO Coaching after trial</span></div>
+      </div>
+      <div class="email-divider"></div>
+      <div class="email-section-title">How to Start</div>
+      <div class="email-steps">
+        <div class="email-step"><div class="email-step-num">1</div><p><strong>Video Guidelines:</strong> Watch/share the 90-second recording guide.</p></div>
+        <div class="email-step"><div class="email-step-num">2</div><p><strong>Go to Beta Site:</strong> Visit beta.movaia.com</p></div>
+        <div class="email-step"><div class="email-step-num">3</div><p><strong>Sign Up:</strong> Use this exact email address.</p></div>
+        <div class="email-step"><div class="email-step-num">4</div><p><strong>Test the Workflow:</strong> Upload, review, try the coaching assistant.</p></div>
+      </div>
+      <div class="email-warning">⚠️ Our system has pre-authorized this email to bypass payment and assign you a PRO Coaching account. Using a different email will not work.</div>
+      <div class="email-cta-area"><a href="#" class="email-cta-btn">Access Coaching Dashboard →</a></div>
+      <div class="email-divider"></div>
+      <div class="email-footer-text">Thank you for helping us build the future of coaching technology! 🚀<br><br><strong style="color:var(--white)">Thomas</strong><br><span style="color:var(--movaia-green)">CEO / Founder</span></div>
+    `;
+  }
+}
+
+function toggleApiKey() {
+  const input = document.getElementById('apiKey');
+  input.type = input.type === 'password' ? 'text' : 'password';
+}
+
+function showToast(msg, isError = false) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = 'toast show' + (isError ? ' error' : '');
+  setTimeout(() => toast.className = 'toast', 4000);
+}
+
+function addLog(msg, type = 'info') {
+  const log = document.getElementById('statusLog');
+  const now = new Date().toLocaleTimeString();
+  const entry = document.createElement('div');
+  entry.className = 'log-entry';
+  entry.innerHTML = `<span class="log-time">${now}</span><span class="log-msg ${type}">${msg}</span>`;
+  log.prepend(entry);
+}
+
+// ═══════════ RESEND API ═══════════
+async function sendEmail(tester, index) {
+  const apiKey = document.getElementById('apiKey').value;
+  const fromEmail = document.getElementById('fromEmail').value;
+  const fromName = document.getElementById('fromName').value;
+  
+  const isCoach = tester.type === 'Coach';
+  const subject = isCoach
+    ? `Exclusive Beta Invite: Streamline your Gait Analysis with Movaia`
+    : `You're Invited: Exclusive Beta Access to Movaia Running Form Analysis`;
+  
+  const html = isCoach ? getCoachHTML(tester.name) : getRunnerHTML(tester.name);
+
+  try {
+    const res = await fetch('/api/send', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        apiKey: apiKey,
+        from: `${fromName} <${fromEmail}>`,
+        to: [tester.email],
+        subject: subject,
+        html: html
+      })
+    });
+
+    const data = await res.json();
+    
+    if (res.ok) {
+      const dot = document.getElementById(`status-${index}`);
+      dot.className = 'tester-status sent';
+      dot.title = 'Sent';
+      addLog(`✓ Sent to ${tester.name} (${tester.email})`, 'success');
+      return true;
+    } else {
+      const dot = document.getElementById(`status-${index}`);
+      dot.className = 'tester-status failed';
+      dot.title = 'Failed';
+      addLog(`✗ Failed: ${tester.name} — ${data.message || 'Unknown error'}`, 'error');
+      return false;
+    }
+  } catch (err) {
+    const dot = document.getElementById(`status-${index}`);
+    dot.className = 'tester-status failed';
+    dot.title = 'Failed';
+    addLog(`✗ Network error: ${tester.name} — ${err.message}`, 'error');
+    return false;
+  }
+}
+
+async function sendTestEmail() {
+  addLog('Sending test email to Thomas@movaia.com...', 'warn');
+  const apiKey = document.getElementById('apiKey').value;
+  const fromEmail = document.getElementById('fromEmail').value;
+  const fromName = document.getElementById('fromName').value;
+
+  try {
+    const res = await fetch('/api/send', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        apiKey: apiKey,
+        from: `${fromName} <${fromEmail}>`,
+        to: ['Thomas@movaia.com'],
+        subject: '🧪 [TEST] Beta Campaign Preview — Runner Template',
+        html: getRunnerHTML('Thomas')
+      })
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      addLog('✓ Test email sent to Thomas@movaia.com!', 'success');
+      showToast('✅ Test email sent to Thomas!');
+    } else {
+      addLog(`✗ Test failed: ${data.message || JSON.stringify(data)}`, 'error');
+      showToast('Failed to send test email', true);
+    }
+  } catch (err) {
+    addLog(`✗ Network error: ${err.message}`, 'error');
+    showToast('Network error — check API key', true);
+  }
+}
+
+// ═══════════ PARTICLE SYSTEM (COUNTDOWN) ═══════════
+function initParticles(canvasId) {
+  const canvas = document.getElementById(canvasId);
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  
+  const particles = [];
+  for (let i = 0; i < 80; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5,
+      size: Math.random() * 2 + 0.5,
+      alpha: Math.random() * 0.5 + 0.1
+    });
+  }
+  
+  let animId;
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0) p.x = canvas.width;
+      if (p.x > canvas.width) p.x = 0;
+      if (p.y < 0) p.y = canvas.height;
+      if (p.y > canvas.height) p.y = 0;
+      
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(123, 255, 0, ${p.alpha})`;
+      ctx.fill();
+    });
+    
+    // Draw connections
+    particles.forEach((a, i) => {
+      particles.slice(i + 1).forEach(b => {
+        const dx = a.x - b.x;
+        const dy = a.y - b.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 120) {
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.strokeStyle = `rgba(123, 255, 0, ${0.06 * (1 - dist / 120)})`;
+          ctx.stroke();
+        }
+      });
+    });
+    animId = requestAnimationFrame(animate);
+  }
+  animate();
+  return () => cancelAnimationFrame(animId);
+}
+
+// ═══════════ CONFETTI SYSTEM (SUCCESS) ═══════════
+function initConfetti(canvasId) {
+  const canvas = document.getElementById(canvasId);
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  
+  const colors = ['#7bff00', '#5abf00', '#ffffff', '#ffaa00', '#00ff88', '#7bff00'];
+  const confetti = [];
+  
+  // Burst from center
+  for (let i = 0; i < 150; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = Math.random() * 12 + 4;
+    confetti.push({
+      x: canvas.width / 2,
+      y: canvas.height / 2,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed - 5,
+      w: Math.random() * 8 + 4,
+      h: Math.random() * 4 + 2,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      rotation: Math.random() * 360,
+      rotSpeed: (Math.random() - 0.5) * 15,
+      gravity: 0.15 + Math.random() * 0.1,
+      alpha: 1,
+      decay: 0.003 + Math.random() * 0.005
+    });
+  }
+  
+  // Side cannons
+  for (let i = 0; i < 60; i++) {
+    const fromLeft = Math.random() > 0.5;
+    confetti.push({
+      x: fromLeft ? 0 : canvas.width,
+      y: canvas.height * 0.6 + Math.random() * canvas.height * 0.3,
+      vx: (fromLeft ? 1 : -1) * (Math.random() * 8 + 3),
+      vy: -(Math.random() * 10 + 5),
+      w: Math.random() * 10 + 4,
+      h: Math.random() * 4 + 2,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      rotation: Math.random() * 360,
+      rotSpeed: (Math.random() - 0.5) * 12,
+      gravity: 0.12 + Math.random() * 0.08,
+      alpha: 1,
+      decay: 0.002 + Math.random() * 0.004
+    });
+  }
+  
+  let animId;
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    let alive = 0;
+    confetti.forEach(c => {
+      if (c.alpha <= 0) return;
+      alive++;
+      c.x += c.vx;
+      c.vy += c.gravity;
+      c.y += c.vy;
+      c.vx *= 0.99;
+      c.rotation += c.rotSpeed;
+      c.alpha -= c.decay;
+      
+      ctx.save();
+      ctx.translate(c.x, c.y);
+      ctx.rotate(c.rotation * Math.PI / 180);
+      ctx.globalAlpha = Math.max(0, c.alpha);
+      ctx.fillStyle = c.color;
+      ctx.fillRect(-c.w / 2, -c.h / 2, c.w, c.h);
+      ctx.restore();
+    });
+    
+    if (alive > 0) {
+      animId = requestAnimationFrame(animate);
+    }
+  }
+  animate();
+  return () => cancelAnimationFrame(animId);
+}
+
+// ═══════════ COUNTDOWN SEQUENCE ═══════════
+function runCountdown() {
+  return new Promise(resolve => {
+    const overlay = document.getElementById('countdownOverlay');
+    const numEl = document.getElementById('countdownNumber');
+    const subEl = document.getElementById('countdownSub');
+    const labelEl = document.querySelector('.countdown-label');
+    
+    overlay.classList.add('active');
+    const stopParticles = initParticles('particleCanvas');
+    
+    const steps = [
+      { num: '3', sub: 'Systems armed', label: 'INITIATING LAUNCH SEQUENCE' },
+      { num: '2', sub: 'Templates loaded', label: 'INITIATING LAUNCH SEQUENCE' },
+      { num: '1', sub: '27 emails ready', label: 'INITIATING LAUNCH SEQUENCE' },
+      { num: '🚀', sub: '', label: 'LAUNCHING' }
+    ];
+    
+    let step = 0;
+    
+    function showStep() {
+      if (step >= steps.length) {
+        // Create shockwave effect
+        const wave = document.createElement('div');
+        wave.className = 'shockwave';
+        overlay.appendChild(wave);
+        
+        setTimeout(() => {
+          stopParticles();
+          overlay.classList.remove('active');
+          wave.remove();
+          resolve();
+        }, 600);
+        return;
+      }
+      
+      const s = steps[step];
+      numEl.textContent = s.num;
+      subEl.textContent = s.sub;
+      labelEl.textContent = s.label;
+      
+      // Re-trigger pop animation
+      numEl.style.animation = 'none';
+      numEl.offsetHeight; // force reflow
+      numEl.style.animation = 'countdownPop 0.6s cubic-bezier(0.34,1.56,0.64,1) both';
+      
+      step++;
+      setTimeout(showStep, step <= 3 ? 1000 : 500);
+    }
+    
+    showStep();
+  });
+}
+
+// ═══════════ SUCCESS CELEBRATION ═══════════
+function showSuccess(sent, failed) {
+  const runners = TESTERS.filter(t => t.type === 'Runner').length;
+  const coaches = TESTERS.filter(t => t.type === 'Coach').length;
+  
+  // Screen flash
+  const flash = document.createElement('div');
+  flash.className = 'screen-flash';
+  document.body.appendChild(flash);
+  setTimeout(() => flash.remove(), 700);
+  
+  const overlay = document.getElementById('successOverlay');
+  document.getElementById('successNum').textContent = sent;
+  document.getElementById('sbiRunners').textContent = runners;
+  document.getElementById('sbiCoaches').textContent = coaches;
+  document.getElementById('sbiFailed').textContent = failed;
+  
+  if (failed > 0) {
+    document.getElementById('successTitle').textContent = 'CAMPAIGN COMPLETE';
+    document.getElementById('sbiFailed').style.color = 'var(--red)';
+  }
+  
+  overlay.classList.add('active');
+  
+  // Launch confetti after a short delay
+  setTimeout(() => initConfetti('confettiCanvas'), 400);
+  
+  // Second confetti burst
+  setTimeout(() => initConfetti('confettiCanvas'), 2000);
+}
+
+function closeSuccess() {
+  document.getElementById('successOverlay').classList.remove('active');
+}
+
+// ═══════════ LAUNCH CAMPAIGN (DRAMATIC) ═══════════
+async function launchCampaign() {
+  const btn = document.getElementById('launchBtn');
+  const section = document.getElementById('launchSection');
+  
+  if (!confirm('🚀 Launch campaign?\n\nThis will send personalized emails to all 27 beta testers.\n\nRunners → Athlete invite\nCoaches → Professional toolkit\n\nAll from Thomas Butter, CEO & Founder.\n\nProceed?')) return;
+
+  // Run the countdown
+  await runCountdown();
+
+  // Now start sending
+  btn.disabled = true;
+  btn.querySelector('span').textContent = 'TRANSMITTING...';
+  section.classList.add('sending');
+  
+  const progress = document.getElementById('progressContainer');
+  const fill = document.getElementById('progressFill');
+  const sentText = document.getElementById('progressSent');
+  const percentText = document.getElementById('progressPercent');
+  progress.style.display = 'block';
+  fill.classList.add('active');
+
+  // Insert live counter above progress
+  const liveCounter = document.createElement('div');
+  liveCounter.className = 'live-counter';
+  liveCounter.innerHTML = '0 <span class="of-total">/ 27</span>';
+  progress.parentNode.insertBefore(liveCounter, progress);
+
+  addLog('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'info');
+  addLog('🚀 CAMPAIGN LAUNCHED — sending to 27 beta testers', 'info');
+  addLog('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'info');
+  
+  let sent = 0;
+  let failed = 0;
+
+  for (let i = 0; i < TESTERS.length; i++) {
+    addLog(`→ Sending to ${TESTERS[i].name} (${TESTERS[i].type})...`, 'warn');
+    const success = await sendEmail(TESTERS[i], i);
+    if (success) sent++; else failed++;
+    
+    const total = sent + failed;
+    const pct = Math.round((total / TESTERS.length) * 100);
+    fill.style.width = pct + '%';
+    sentText.textContent = `${total} / ${TESTERS.length} sent`;
+    percentText.textContent = pct + '%';
+    liveCounter.innerHTML = `${total} <span class="of-total">/ ${TESTERS.length}</span>`;
+    
+    // Small delay between sends
+    if (i < TESTERS.length - 1) await new Promise(r => setTimeout(r, 400));
+  }
+
+  fill.classList.remove('active');
+  section.classList.remove('sending');
+
+  addLog('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'info');
+  addLog(`✅ CAMPAIGN COMPLETE: ${sent} sent, ${failed} failed`, sent === TESTERS.length ? 'success' : 'warn');
+  addLog('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'info');
+  
+  btn.querySelector('span').textContent = `✓ CAMPAIGN DEPLOYED`;
+
+  // Wait a beat, then show the celebration
+  await new Promise(r => setTimeout(r, 800));
+  showSuccess(sent, failed);
+}
+
+// ═══════════ INIT ═══════════
+renderTesterList();
+showTemplate('runner', document.querySelector('.email-toggle'));
+addLog('Command center initialized — ready to launch', 'info');
+addLog(`Loaded ${TESTERS.length} beta testers (${TESTERS.filter(t=>t.type==='Runner').length} runners, ${TESTERS.filter(t=>t.type==='Coach').length} coaches)`, 'info');
+</script>
+
+</body>
+</html>
