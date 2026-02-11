@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Movaia — Beta Launch Command Center</title>
+<title>MOVAIA — Beta Launch Command Center</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -520,33 +520,6 @@ section{padding:6rem 2rem}
 .launch-btn:disabled:hover::before{transform:scaleX(0)}
 .launch-btn:disabled:hover{color:var(--movaia-green)}
 
-/* ═══════ STATUS LOG ═══════ */
-.status-log{
-  max-width:800px;
-  margin:2rem auto 0;
-  text-align:left;
-}
-
-.log-entry{
-  font-family:'JetBrains Mono',monospace;
-  font-size:0.75rem;
-  padding:0.4rem 0;
-  border-bottom:1px solid rgba(255,255,255,0.03);
-  display:flex;
-  gap:1rem;
-  align-items:center;
-  animation:fadeIn 0.3s ease-out;
-}
-
-@keyframes fadeIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
-
-.log-time{color:var(--gray-dim);flex-shrink:0}
-.log-msg{flex:1}
-.log-msg.success{color:var(--success)}
-.log-msg.error{color:var(--red)}
-.log-msg.info{color:var(--movaia-green)}
-.log-msg.warn{color:var(--amber)}
-
 /* ═══════ PROGRESS BAR ═══════ */
 .progress-container{
   max-width:600px;
@@ -983,14 +956,14 @@ footer .movaia{color:var(--movaia-green);font-weight:700}
         </div>
         <div>
           <label style="font-size:0.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;display:block">From Name</label>
-          <input type="text" id="fromName" value="Thomas Butter — Movaia" 
+          <input type="text" id="fromName" value="Thomas Butter - Movaia" 
             style="width:100%;padding:0.75rem 1rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:var(--white);font-family:'Outfit',sans-serif;font-size:0.85rem;outline:none"
           >
         </div>
         
         <div style="display:flex;gap:0.75rem;margin-top:0.5rem">
           <button onclick="sendTestEmail()" style="flex:1;padding:0.75rem;background:rgba(123,255,0,0.1);border:1px solid rgba(123,255,0,0.3);border-radius:6px;color:var(--movaia-green);font-family:'Outfit',sans-serif;font-weight:600;font-size:0.85rem;cursor:pointer;transition:all 0.3s" onmouseover="this.style.background='rgba(123,255,0,0.2)'" onmouseout="this.style.background='rgba(123,255,0,0.1)'">
-            ✉ Send Test to Thomas
+            ✉ Send Test to Kartik
           </button>
           <button onclick="toggleApiKey()" style="padding:0.75rem 1rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:var(--gray);font-family:'Outfit',sans-serif;font-size:0.85rem;cursor:pointer;transition:all 0.3s" onmouseover="this.style.borderColor='rgba(255,255,255,0.2)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'">
             👁 Toggle Key
@@ -1048,8 +1021,6 @@ footer .movaia{color:var(--movaia-green);font-weight:700}
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="24" height="24"><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
     <span>Launch Campaign</span>
   </button>
-
-  <div class="status-log" id="statusLog"></div>
 </section>
 
 <!-- ═══════════ COUNTDOWN OVERLAY ═══════════ -->
@@ -1569,12 +1540,7 @@ function showToast(msg, isError = false) {
 }
 
 function addLog(msg, type = 'info') {
-  const log = document.getElementById('statusLog');
-  const now = new Date().toLocaleTimeString();
-  const entry = document.createElement('div');
-  entry.className = 'log-entry';
-  entry.innerHTML = `<span class="log-time">${now}</span><span class="log-msg ${type}">${msg}</span>`;
-  log.prepend(entry);
+  // Status log removed — silent operation
 }
 
 // ═══════════ RESEND API ═══════════
@@ -1630,7 +1596,7 @@ async function sendEmail(tester, index) {
 }
 
 async function sendTestEmail() {
-  addLog('Sending test email to Thomas@movaia.com...', 'warn');
+  addLog('Sending test email to kartik.cityu@gmail.com...', 'warn');
   const apiKey = document.getElementById('apiKey').value;
   const fromEmail = document.getElementById('fromEmail').value;
   const fromName = document.getElementById('fromName').value;
@@ -1644,7 +1610,7 @@ async function sendTestEmail() {
       body: JSON.stringify({
         apiKey: apiKey,
         from: `${fromName} <${fromEmail}>`,
-        to: ['Kartik@movaia.com'],
+        to: ['kartik.cityu@gmail.com'],
         subject: '🧪 [TEST] Beta Campaign Preview — Runner Template',
         html: getRunnerHTML('Thomas')
       })
@@ -1652,8 +1618,8 @@ async function sendTestEmail() {
 
     const data = await res.json();
     if (res.ok) {
-      addLog('✓ Test email sent to Thomas@movaia.com!', 'success');
-      showToast('✅ Test email sent to Thomas!');
+      addLog('✓ Test email sent to kartik.cityu@gmail.com!', 'success');
+      showToast('✅ Test email sent to Kartik!');
     } else {
       addLog(`✗ Test failed: ${data.message || JSON.stringify(data)}`, 'error');
       showToast('Failed to send test email', true);
@@ -1959,8 +1925,6 @@ async function launchCampaign() {
 // ═══════════ INIT ═══════════
 renderTesterList();
 showTemplate('runner', document.querySelector('.email-toggle'));
-addLog('Command center initialized — ready to launch', 'info');
-addLog(`Loaded ${TESTERS.length} beta testers (${TESTERS.filter(t=>t.type==='Runner').length} runners, ${TESTERS.filter(t=>t.type==='Coach').length} coaches)`, 'info');
 </script>
 
 </body>
